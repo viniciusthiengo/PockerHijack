@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all_tables"
+            android:title="Mesas completas" />
+        <item
+            android:id="@+id/nav_table_5k"
+            android:title="Mesas de 5 mil" />
+        <item
+            android:id="@+id/nav_table_10k"
+            android:title="Mesas de 10 mil" />
+        <item
+            android:id="@+id/nav_table_15k"
+            android:title="Mesas de 15 mil" />
+        <item
+            android:id="@+id/nav_table_50k"
+            android:title="Mesas de 50 mil" />
+        <item
+            android:id="@+id/nav_table_sponsor"
+            android:title="Mesas patrocinadas" />
+    </group>
+
+    <item android:title="Configurações">
+        <menu>
+            <item
+                android:id="@+id/nav_notification"
+                android:icon="@drawable/ic_notification"
+                android:title="Notificação bolha" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_person"
+                android:title="Perfil" />
+        </menu>
+    </item>
+
+</menu>

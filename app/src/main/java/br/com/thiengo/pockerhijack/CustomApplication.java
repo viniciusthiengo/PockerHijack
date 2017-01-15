@@ -31,7 +31,9 @@ public class CustomApplication extends Application implements OneSignal.Notifica
     @Override
     public void notificationReceived(OSNotification notification) {
 
-        if( Util.isSystemAlertPermissionGranted(this) ){
+        if( !MainActivity.isOpened
+                && Util.isSystemAlertPermissionGranted(this) ){
+
             Message message = getMessage( notification );
 
             Intent intent = new Intent( this, BubbleNotification.class);

@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.onesignal.OneSignal;
+
 import java.util.List;
 
 import br.com.thiengo.pockerhijack.domain.Table;
@@ -21,12 +23,15 @@ import br.com.thiengo.pockerhijack.service.BubbleNotification;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static boolean isOpened = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        isOpened = true;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = new Intent( this, BubbleNotification.class);
         stopService(intent);
+
+        OneSignal.clearOneSignalNotifications();
     }
 
     @Override
@@ -70,5 +77,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isOpened = false;
     }
 }

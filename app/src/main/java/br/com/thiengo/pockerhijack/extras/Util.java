@@ -22,6 +22,10 @@ public class Util {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays( context );
     }
 
+    public static boolean isPlusEqualsApi13() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2;
+    }
+
     public static int getDpsToPixels( int dp ){
         dp = (int) (dp * Resources.getSystem().getDisplayMetrics().density);
         return dp;

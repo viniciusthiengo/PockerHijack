@@ -76,24 +76,16 @@ public class Notification implements View.OnTouchListener {
     }
 
     private void setParams() {
-        this.params = new WindowManager.LayoutParams(
+        params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        this.params.gravity = Gravity.TOP | Gravity.LEFT;
-        this.params.x = 0;
-        this.params.y = 100;
-    }
-
-    public void updateBubbleView( Message message ){
-        ((TextView) bubble.findViewById(R.id.tv_message)).setText( message.getMessage() );
-
-        Picasso.with( bubble.getContext() )
-                .load( message.getUser().getImage() )
-                .into( ((CircularImageView) bubble.findViewById(R.id.cimv_profile)) );
+        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.x = 0;
+        params.y = 100;
     }
 
     @Override
@@ -134,7 +126,7 @@ public class Notification implements View.OnTouchListener {
             isInRightSide = false;
         }
         slowDrawBubbleMove( desiredPosition );
-        updateContentParams( desiredPosition == 0 );
+        updateWindowViews();
         callActivityIfClicked();
         Log.i("Log", "ACTION_UP");
     }
@@ -158,46 +150,57 @@ public class Notification implements View.OnTouchListener {
     }
 
     private void slowDrawBubbleMove( int desiredPosition ){
-        int initialPosition = params.x;
-        boolean isToGrow = initialPosition < desiredPosition;
-        WindowManager.LayoutParams params = (WindowManager.LayoutParams) bubble.getLayoutParams();
+        int incDec = params.x < desiredPosition ? 1 : -1;
 
         while(true){
-            if( isToGrow && initialPosition < desiredPosition ){
-                initialPosition++;
-            }
-            else if( !isToGrow && initialPosition > desiredPosition ){
-                initialPosition--;
+            if( params.x < desiredPosition
+                    || params.x > desiredPosition ){
+                params.x += incDec;
             }
             else{
                 break;
             }
-            params.x = initialPosition;
             windowManager.updateViewLayout(bubble, params);
         }
     }
 
-    private void updateContentParams( boolean isToLeft ){
-        RelativeLayout view;
+    private void updateWindowViews(){
+        /* PARTE 1 */
+        Bitmap bitmap = ((BitmapDrawable) ((ImageView)bubble.findViewById(R.id.cimv_profile))
+                .getDrawable())
+                .getBitmap();
+
+        String text = ((TextView) bubble.findViewById(R.id.tv_message))
+                .getText()
+                .toString();
+
+        /* PARTE 2 */
+        Context context = bubble.getContext();
+        int layout = isInRightSide ? R.layout.bubble_notification_right : R.layout.bubble_notification_left;
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 Util.getDpsToPixels( 166 ),
                 RelativeLayout.LayoutParams.WRAP_CONTENT );
-        Bitmap bitmap = ((BitmapDrawable) ((ImageView)bubble.findViewById(R.id.cimv_profile)).getDrawable()).getBitmap();
-        String text = ((TextView) bubble.findViewById(R.id.tv_message)).getText().toString();
-        Context context = bubble.getContext();
 
+        /* PARTE 3 */
         bubble.removeAllViews();
-        if( isToLeft ){
-            view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bubble_notification_left, null);
-        }
-        else{
-            view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bubble_notification_right, null);
-        }
+
+        /* PARTE 4 */
+        RelativeLayout view = (RelativeLayout) LayoutInflater
+                                                .from(context)
+                                                .inflate( layout, null );
 
         ((ImageView)view.findViewById(R.id.cimv_profile)).setImageBitmap( bitmap );
         ((TextView)view.findViewById(R.id.tv_message)).setText( text );
 
         view.setLayoutParams(lp);
         bubble.addView( view );
+    }
+
+    public void updateBubbleView( Message message ){
+        ((TextView) bubble.findViewById(R.id.tv_message)).setText( message.getMessage() );
+
+        Picasso.with( bubble.getContext() )
+                .load( message.getUser().getImage() )
+                .into( ((CircularImageView) bubble.findViewById(R.id.cimv_profile)) );
     }
 }

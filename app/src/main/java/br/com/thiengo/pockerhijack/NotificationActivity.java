@@ -1,7 +1,9 @@
 package br.com.thiengo.pockerhijack;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,10 @@ public class NotificationActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        updateViews();
+    }
+
+    private void updateViews(){
         TextView tvNotification = (TextView) findViewById(R.id.tv_notification_text);
         Button btNotification = (Button) findViewById(R.id.bt_notification);
 
@@ -48,9 +54,10 @@ public class NotificationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void callAndroidSettings( View view ){
         String packageName = getPackageName();
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
-        startActivityForResult(intent, 558);
+        startActivity(intent);
     }
 }

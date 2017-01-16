@@ -27,7 +27,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".service.BubbleNotification"
+            android:name=".service.NotificationService"
             android:enabled="true"
             android:exported="false" />
     </application>

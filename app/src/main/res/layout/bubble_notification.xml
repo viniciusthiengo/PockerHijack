@@ -4,6 +4,5 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
-    <include
-        layout="@layout/bubble_notification_left" />
+    <include layout="@layout/bubble_notification_left" />
 </RelativeLayout>

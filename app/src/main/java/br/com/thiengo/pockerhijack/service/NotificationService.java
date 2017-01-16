@@ -19,7 +19,7 @@ import br.com.thiengo.pockerhijack.domain.User;
  * Created by viniciusthiengo on 15/01/17.
  */
 
-public class BubbleNotification extends Service {
+public class NotificationService extends Service {
     private WindowManager windowManager;
     private List<Notification> bubbles;
 

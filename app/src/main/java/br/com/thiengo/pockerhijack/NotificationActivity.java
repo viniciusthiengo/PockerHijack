@@ -28,22 +28,12 @@ public class NotificationActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-        updateViews();
     }
 
-    private void updateViews(){
-        TextView tvNotification = (TextView) findViewById(R.id.tv_notification_text);
-        Button btNotification = (Button) findViewById(R.id.bt_notification);
-
-        if( Util.isSystemAlertPermissionGranted( this ) ){
-            tvNotification.setText("As notificações em bolha estão ativadas para esse aplicativo.");
-            btNotification.setVisibility(View.GONE);
-        }
-        else{
-            tvNotification.setText("As notificações em bolha não estão ativadas ainda. Para obter mais desse aplicativo, ative-as clicando no botão abaixo e atualizando as configurações que serão apresentadas.");
-            btNotification.setVisibility(View.VISIBLE);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateViews();
     }
 
     @Override
@@ -54,10 +44,25 @@ public class NotificationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void updateViews(){
+        TextView tvNotificationText = (TextView) findViewById(R.id.tv_notification_text);
+        Button btNotificationText = (Button) findViewById(R.id.bt_notification);
+
+        if( Util.isSystemAlertPermissionGranted(this) ){
+            tvNotificationText.setText( getResources().getString( R.string.notification_ok ) );
+            btNotificationText.setVisibility( View.GONE );
+        }
+        else{
+            tvNotificationText.setText( getResources().getString( R.string.notification_denied ) );
+        }
+    }
+
+
     @TargetApi(Build.VERSION_CODES.M)
     public void callAndroidSettings( View view ){
         String packageName = getPackageName();
-        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
-        startActivity(intent);
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse( "package:"+packageName ));
+        startActivity( intent );
     }
 }

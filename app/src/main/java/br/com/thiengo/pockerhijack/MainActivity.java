@@ -18,7 +18,7 @@ import java.util.List;
 import br.com.thiengo.pockerhijack.domain.Table;
 import br.com.thiengo.pockerhijack.domain.TableAdapter;
 import br.com.thiengo.pockerhijack.extras.Util;
-import br.com.thiengo.pockerhijack.service.NotificationService;
+import br.com.thiengo.pockerhijack.services.NotificationService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,9 +47,8 @@ public class MainActivity extends AppCompatActivity
         TableAdapter tableAdapter = new TableAdapter(this, tables);
         lvTables.setAdapter( tableAdapter );
 
-        Intent intent = new Intent( this, NotificationService.class);
-        stopService(intent);
 
+        stopService( new Intent( this, NotificationService.class) );
         OneSignal.clearOneSignalNotifications();
     }
 

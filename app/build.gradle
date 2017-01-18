@@ -6,8 +6,8 @@ android {
     defaultConfig {
         applicationId "br.com.thiengo.pockerhijack"
         manifestPlaceholders = [manifestApplicationId: "${applicationId}",
-                                onesignal_app_id: "d65b9843-49ce-41b1-8c3b-eb6a8d59cc02",
-                                onesignal_google_project_number: "113519449045"]
+                                onesignal_app_id: "",
+                                onesignal_google_project_number: ""]
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
